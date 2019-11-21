@@ -42,6 +42,6 @@
     }
 ```
 
-6.AlexaAndroid-master\libs\AlexaAndroid\src\main\java\com\willblaschko\android\alexa\AmazonAuthorizationActivity.java中,替换AMAZON_ACCOUNT和AMAZON_PSW为您的账号和密码
+6.在文件AlexaAndroid-master\libs\AlexaAndroid\src\main\java\com\willblaschko\android\alexa\AmazonAuthorizationActivity.java中,替换AMAZON_ACCOUNT和AMAZON_PSW为您的账号和密码
 
 7.直接用Android studio跑起来
