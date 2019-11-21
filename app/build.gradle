@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+
+
+//if (file('signing.gradle').exists()) {
+//    apply from: 'signing.gradle'
+//}else{
+//    throw new TaskExecutionException(null, new Exception("Unable to find signing.gradle, please replace Android buildTypes > signing configs with your own configuration."));
+//}
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        applicationId "com.willblaschko.android.alexavoicelibrary"
+        minSdkVersion 21
+        vectorDrawables.useSupportLibrary = true
+        targetSdkVersion 24
+        versionCode 5
+        versionName "2.1.1"
+        multiDexEnabled true;
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("../key/key.jks")
+            storePassword "123456"
+            keyAlias "xxx"
+            keyPassword "123456"
+        }
+        release {
+            storeFile file("../key/key.jks")
+            storePassword "123456"
+            keyAlias "xxx"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        debug{
+            versionNameSuffix " Debug"
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:24.2.1'
+    implementation 'com.android.support:recyclerview-v7:24.2.1'
+    implementation 'com.android.support:multidex:1.0.1'
+
+    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
+    implementation project(path: ':libs:AlexaAndroid')
+    implementation project(path: ':libs:RecorderLevelView')
+    implementation project(path: ':libs:speechutils-master')
+
+}
+
