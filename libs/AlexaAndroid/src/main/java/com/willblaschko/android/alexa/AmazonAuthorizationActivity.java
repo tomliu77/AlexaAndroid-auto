@@ -133,13 +133,29 @@ public class AmazonAuthorizationActivity extends Activity {
                         webView.evaluateJavascript(strPsw, null);
 
                         //模拟点击提交按钮
-                        final String submit = "document.getElementById('signInSubmit').click();";
+                        final String submit = "javascript:document.getElementById('signInSubmit').click();";
                         webView.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 Log.d(LOG_TAG, "submit");
                                 webView.evaluateJavascript(submit, null);
+                                webView.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.d(LOG_TAG, "第一次进入 确认授权应用");
+                                        final String firstCommit = "javascript:document.getElementsByName('consentApproved')[0].click();";
+                                        webView.evaluateJavascript(firstCommit, null);
+                                        webView.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Log.d(LOG_TAG, "国家选择");
+                                                final String nextButton = "javascript:document.getElementsByName('nextButton')[0].click();";
+                                                webView.evaluateJavascript(nextButton, null);
 
+                                            }
+                                        }, 1000);
+                                    }
+                                }, 1000);
                             }
                         }, 1000);
                     }
