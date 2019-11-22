@@ -30,8 +30,12 @@
 ```
 
 2.注册alexa账号并且创建一个Product,并生成Android key(此过程需要第一步APK签名文件的MD5和SHA-256)
+```java
+ //获取MD5和SHA-256的命令如下,Keytool位于Java安装目录中
+ keytool -list -v -alias <alias> -keystore <keystore.filename>
+```
 
-3.在目录\app\src\main\assets\下创建api_key.txt文件,复制Android/Kindle 的API key到api_key.txt
+3.在目录\app\src\main\assets\下创建api_key.txt文件,复制Android的API key(上一步生成的)到api_key.txt
 
 4.在目录\app\src\main\java\com\willblaschko\android\alexavoicelibrary\global\Constants.java中替换PRODUCT_ID为您的产品ID
 
@@ -45,6 +49,13 @@
                     android:scheme="amzn" />
 ```
 
+7.主模块gradle中 applicationId修改为alexa上注册的包名
 
+8.用Android studio跑起来
 
-7.直接用Android studio跑起来
+## 注意事项
+1.采用模拟点击的方式隐式授权,存在一定的风险(如Amazon网页内容发生变化会导致授权失败)
+
+2.若长时间停在授权页面请把act_showweb.xml中的遮罩布局隐藏掉(即第一个RelativeLayout),来观察当前的流程
+
+3.核心代码在AmazonAuthorizationActivity.java中,如有需要请自行遮罩布局
