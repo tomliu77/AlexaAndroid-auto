@@ -58,4 +58,4 @@
 
 2.若长时间停在授权页面,请把act_showweb.xml中的遮罩布局隐藏掉,来观察当前的授权进度
 
-3.核心代码在AmazonAuthorizationActivity.java中,如有需要请自行遮罩布局
+3.核心代码在AmazonAuthorizationActivity.java中,如有需要请自行修改遮罩布局
