@@ -4,10 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--   遮罩层 -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#000000">
+
         <TextView
             android:id="@+id/tv_auth"
             android:layout_width="wrap_content"
@@ -16,15 +18,17 @@
             android:layout_marginEnd="10dp"
             android:text="Authorizing..."
             android:textSize="30sp" />
+
         <ProgressBar
             android:id="@+id/pb_auth"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/tv_auth"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@id/tv_auth" />
     </RelativeLayout>
 
+    <!--   webView进度条,可以不要 -->
     <ProgressBar
         android:id="@+id/pb"
         style="?android:attr/progressBarStyleHorizontal"
