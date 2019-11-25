@@ -66,8 +66,7 @@
         android:theme="@style/AppTheme"
         android:name=".AlexaApplication">
 
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />

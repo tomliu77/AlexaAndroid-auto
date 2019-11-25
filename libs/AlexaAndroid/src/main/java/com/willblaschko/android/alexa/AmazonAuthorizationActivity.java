@@ -20,7 +20,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class AmazonAuthorizationActivity extends Activity {
@@ -34,7 +36,10 @@ public class AmazonAuthorizationActivity extends Activity {
     private ProgressBar progressBar;
     private ProgressBar pb_auth;
     private TextView tv_auth;
+    private Button btn_manual_authorization;
+    private RelativeLayout rl_auto_auth;
     private Handler mHandler;
+    private boolean manualAuthorize = false;//手动授权
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +55,18 @@ public class AmazonAuthorizationActivity extends Activity {
         progressBar.setVisibility(View.VISIBLE);
         pb_auth = (ProgressBar) findViewById(R.id.pb_auth);
         tv_auth = (TextView) findViewById(R.id.tv_auth);
+        rl_auto_auth = (RelativeLayout) findViewById(R.id.rl_auto_auth);
+        btn_manual_authorization = (Button) findViewById(R.id.btn_manual_authorization);
+        btn_manual_authorization.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manualAuthorize = true;
+                mHandler.removeCallbacksAndMessages(null);
+                clearCookies(AmazonAuthorizationActivity.this);
+                initWebView();
+                rl_auto_auth.setVisibility(View.GONE);
+            }
+        });
     }
 
     public static void clearCookies(Context context) {
@@ -126,26 +143,29 @@ public class AmazonAuthorizationActivity extends Activity {
                 final String strAccount = String.format("javascript:document.getElementById('ap_email').value='%s';", AMAZON_ACCOUNT);
                 final String strPsw = String.format("javascript:document.getElementById('ap_password').value='%s';", AMAZON_PSW);
 
-                webView.postDelayed(new Runnable() {
+                mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         webView.evaluateJavascript(strAccount, null);
                         webView.evaluateJavascript(strPsw, null);
-
+                        if (manualAuthorize) {
+                            Log.d(LOG_TAG, "manual Authorize");
+                            return;
+                        }
                         //模拟点击提交按钮
                         final String submit = "javascript:document.getElementById('signInSubmit').click();";
-                        webView.postDelayed(new Runnable() {
+                        mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 Log.d(LOG_TAG, "submit");
                                 webView.evaluateJavascript(submit, null);
-                                webView.postDelayed(new Runnable() {
+                                mHandler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         Log.d(LOG_TAG, "第一次进入 确认授权应用");
                                         final String firstCommit = "javascript:document.getElementsByName('consentApproved')[0].click();";
                                         webView.evaluateJavascript(firstCommit, null);
-                                        webView.postDelayed(new Runnable() {
+                                        mHandler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
                                                 Log.d(LOG_TAG, "国家选择");

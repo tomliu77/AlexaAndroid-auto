@@ -24,7 +24,7 @@
             android:name=".AmazonAuthorizationActivity"
             android:allowTaskReparenting="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+
             android:windowSoftInputMode="adjustResize"></activity>
     </application>
 </manifest>
